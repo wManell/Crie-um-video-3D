@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CajaBaja · Tutorial: como criar um vídeo 3D de engenharia</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#fff6ec;--panel:#ffffff;--ink:#141414;--mut:#5f5648;--or:#ff6a00;--or2:#d95500;--blk:#0a0a0a;--line:#e6d6c2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0a0a;--panel:#151515;--ink:#f4f1ec;--mut:#a79d90;--line:#2c2c2c;--or2:#ff8a3d}}
+:root[data-theme="dark"]{--bg:#0a0a0a;--panel:#151515;--ink:#f4f1ec;--mut:#a79d90;--line:#2c2c2c;--or2:#ff8a3d}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,Arial,sans-serif;line-height:1.65;font-size:17px}
+h1,h2,h3,.bn{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;letter-spacing:.02em;font-weight:400;line-height:1}
+a{color:var(--or2)}
+.stripe{height:14px;background:repeating-linear-gradient(-45deg,var(--or) 0 16px,var(--blk) 16px 32px)}
+header.top{position:sticky;top:0;z-index:20;background:var(--blk);color:#fff;border-bottom:3px solid var(--or)}
+header.top .nav{max-width:1100px;margin:0 auto;display:flex;gap:6px;align-items:center;overflow-x:auto;padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top,0px));white-space:nowrap}
+header.top b{font-family:'Bebas Neue',Impact,sans-serif;font-size:26px;color:var(--or);margin-right:10px;font-weight:400}
+header.top a{color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:6px 10px;border-radius:99px}
+header.top a:hover{background:var(--or);color:#000}
+#prog{height:5px;background:#2a2a2a}#prog i{display:block;height:100%;width:0;background:var(--or);transition:width .3s}
+.hero{background:var(--blk);color:#fff;padding:56px 16px 60px;position:relative;overflow:hidden}
+.hero::after{content:"CAJABAJA";position:absolute;right:-10px;bottom:-26px;font-family:'Bebas Neue',Impact,sans-serif;font-size:min(30vw,230px);color:transparent;-webkit-text-stroke:2px #ff6a0055;line-height:1;pointer-events:none}
+.wrap{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+.kick{color:var(--or);font-weight:800;letter-spacing:.18em;font-size:13px;text-transform:uppercase}
+.hero h1{font-size:clamp(46px,9vw,100px);margin:10px 0 14px}.hero h1 span{color:var(--or)}
+.hero p{max-width:660px;font-size:19px;color:#ddd}
+.btn{display:inline-block;background:var(--or);color:#000;font:inherit;font-weight:800;padding:12px 22px;border-radius:6px;text-decoration:none;margin:10px 10px 0 0;border:0;cursor:pointer;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.btn.o{background:transparent;color:#fff;box-shadow:inset 0 0 0 2px var(--or)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:30px}
+.stats div{border-top:4px solid var(--or);padding-top:8px}
+.stats b{display:block;font-family:'Bebas Neue',Impact,sans-serif;font-size:44px;color:var(--or);font-weight:400;line-height:1}
+.stats span{font-size:13px;color:#ccc}
+main{padding:0 16px}
+section{max-width:1000px;margin:0 auto;padding:54px 0 6px}
+h2{font-size:clamp(34px,6vw,54px);margin:0 0 8px;display:flex;align-items:center;gap:14px}
+h2 .bn{background:var(--or);color:#000;font-size:.62em;padding:6px 12px 3px;border-radius:6px;flex:none}
+h3{font-size:26px;margin:22px 0 6px}
+.lead{color:var(--mut);margin:0 0 18px;max-width:780px}
+.mut{color:var(--mut);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--or);border-radius:8px;padding:16px 18px}
+.card h4{margin:0 0 6px;font-size:16px}.card p{margin:0 0 6px}
+.tip{background:var(--blk);color:#f1e9df;border:2px solid var(--or);border-radius:10px;padding:14px 18px;margin:16px 0}
+.tip b{color:var(--or)}
+.warn{border-color:#e5392e}.warn b{color:#ff6b5e}
+ul,ol{padding-left:22px;margin:6px 0}li{margin:5px 0}
+.pr{margin:16px 0;border-radius:10px;overflow:hidden;border:2px solid var(--or);background:var(--blk)}
+.pr .bar{display:flex;justify-content:space-between;align-items:center;background:var(--or);color:#000;padding:6px 12px;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.pr .bar button{background:#000;color:var(--or);border:0;border-radius:99px;padding:5px 14px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.pr pre{margin:0;padding:16px;color:#fff;white-space:pre-wrap;font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.65}
+.pr pre mark{background:#ff6a0033;color:#ffb870;padding:0 3px;border-radius:3px}
+pre.cmd{background:#0a0a0a;color:#ffb870;padding:14px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.5;border:1px solid #333;font-family:ui-monospace,Menlo,Consolas,monospace}
+.step{display:flex;gap:18px}
+.plate{flex:none;width:60px;height:60px;background:var(--or);color:#000;font-family:'Bebas Neue',Impact,sans-serif;font-size:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;border:3px solid #000;box-shadow:0 0 0 3px var(--or)}
+.step>div:not(.plate){min-width:0;flex:1}
+.step h2{margin:0 0 4px;display:block}
+.done{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-weight:700;cursor:pointer;font-size:15px}
+.done input{width:20px;height:20px;accent-color:var(--or)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th{background:var(--blk);color:var(--or);text-align:left;padding:8px 10px;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+code{background:color-mix(in srgb,var(--or) 14%,transparent);padding:1px 6px;border-radius:4px;font-size:.92em}
+.sw{display:flex;align-items:center;gap:10px}.sw i{width:26px;height:26px;border-radius:6px;border:2px solid #000;flex:none}
+.rm{max-height:340px;overflow:auto}
+footer{margin-top:70px;background:var(--blk);color:#bbb;text-align:center;padding:0 16px 34px}
+.chk{height:36px;background:conic-gradient(#fff 25%,#0a0a0a 0 50%,#fff 0 75%,#0a0a0a 0) 0 0/36px 36px;margin-bottom:26px}
+footer b{font-family:'Bebas Neue',Impact,sans-serif;font-size:34px;color:var(--or);font-weight:400;display:block}
+@media (max-width:640px){.step{flex-direction:column;gap:10px}.plate{width:48px;height:48px;font-size:34px}main{padding:0 12px}body{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="stripe"></div>
+<header class="top"><div class="nav"><b>CAJABAJA</b><a href="#antes">Antes</a><a href="#passo-1">1 Ideia</a><a href="#passo-2">2 Baixar</a><a href="#passo-3">3 Analisar</a><a href="#passo-4">4 Roteiro</a><a href="#passo-5">5 Cenas</a><a href="#passo-6">6 Voz</a><a href="#passo-7">7 Sincronizar</a><a href="#passo-8">8 Ajustes</a><a href="#passo-9">9 Postar</a><a href="#exemplo">Exemplo</a><a href="#problemas">Problemas</a></div><div id="prog"><i></i></div></header>
+
+<div class="hero"><div class="wrap">
+<div class="kick">CajaBaja · Tutorial para novos membros</div>
+<h1>Crie um vídeo <span>3D</span> de engenharia, do zero ao post</h1>
+<p>Um passo a passo com os prompts prontos para copiar: da ideia até o vídeo dublado, usando o Claude, o ElevenLabs e um vídeo viral como referência de estilo. Não precisa saber programar.</p>
+<a class="btn" href="#antes">Começar</a><a class="btn o" href="#exemplo">Ver o vídeo que já fizemos</a>
+<div class="stats"><div><b>9</b><span>passos</span></div><div><b>8</b><span>prompts prontos</span></div><div><b>3</b><span>ferramentas</span></div><div><b>0</b><span>linhas de código para você escrever</span></div></div>
+</div></div>
+<div class="stripe"></div>
+
+<main>
+<section id="antes"><h2><span class="bn">0</span>Antes de começar</h2>
+<p class="lead">O fluxo é uma conversa só com o Claude, na ordem dos passos. Guarde tudo no mesmo chat: ele lembra do que já foi decidido.</p>
+<div class="grid">
+<div class="card"><h4>O que você precisa</h4><ul><li>Conta no <b>Claude</b>, com a opção de execução de código e criação de arquivos ligada nas Configurações (ela é que permite analisar vídeo e criar o site)</li><li>Conta no <b>ElevenLabs</b> para a voz</li><li>Celular ou computador com <b>gravador de tela</b></li><li>Opcional: <b>CapCut</b> para o acabamento</li></ul></div>
+<div class="card"><h4>O que fica guardado</h4><ul><li>O vídeo de referência (MP4)</li><li>A transcrição dele</li><li>O roteiro final aprovado</li><li>O MP3 da dublagem</li><li>O link da página do vídeo</li></ul></div>
+<div class="card"><h4>Como usar os prompts</h4><p>Cada prompt tem um botão <b>Copiar</b>. Troque o que estiver em <mark style="background:#ff6a0033;color:inherit;padding:0 3px">[colchetes]</mark> pelo seu caso e cole no Claude. Pode ajustar o texto à vontade.</p></div>
+</div>
+<div class="tip warn"><b>Direitos autorais:</b> o vídeo viral serve só para você <b>estudar o estilo</b> (ritmo, cortes, cores, legendas). Roteiro, personagens, cenários e voz do seu vídeo têm que ser originais. Nada de copiar cenas ou texto do vídeo de outra pessoa.</div>
+</section>
+
+<section id="passo-1"><div class="step"><div class="plate">1</div><div>
+<h2>Encontre a ideia</h2>
+<p class="lead">O melhor assunto é uma peça que existe para resolver um problema. É isso que o estilo do vídeo precisa: cada peça nasce de um problema.</p>
+<div class="pr"><div class="bar"><span>Prompt 1 · Ideias</span><button data-t="p1">Copiar</button></div><pre id="p1">Quero criar um vídeo curto (cerca de 2 minutos) de animação 3D explicando uma peça ou sistema do carro Baja para [PÚBLICO: ex. calouros de engenharia]. Liste 10 ideias (ex.: CVT, freio, suspensão, direção, transmissão...). Para cada uma, diga em uma frase qual problema ela resolve e se dá para explicar de forma visual, com peças aparecendo uma de cada vez. No final, recomende as 3 melhores e explique por quê.</pre></div>
+<p><b>Como saber se deu certo:</b> você escolheu um assunto e consegue dizer em uma frase qual problema ele resolve.</p>
+<label class="done"><input type="checkbox" data-s="1"> Passo 1 concluído</label>
+</div></div></section>
+
+<section id="passo-2"><div class="step"><div class="plate">2</div><div>
+<h2>Baixe um vídeo de referência</h2>
+<p class="lead">Procure um vídeo viral de animação 3D que explica como algo funciona, no formato vertical, com legendas palavra por palavra.</p>
+<ol><li>No TikTok ou Instagram, ache um vídeo que <b>explica como uma coisa funciona montando peça por peça</b> (nosso exemplo explicava um motor de carro).</li><li>Copie o link do vídeo.</li><li>Cole em um site de download, como o <b>SnapTik</b>, e baixe o MP4.</li><li>Pegue a <b>transcrição</b> do que ele fala. O Claude não escuta o áudio, então cole o texto no chat. Dá para gerar com as legendas automáticas do CapCut ou copiar da legenda do próprio vídeo.</li></ol>
+<div class="tip"><b>Dica:</b> escolha um vídeo com poucos cortes e muita animação contínua. Esse é o estilo que queremos aprender.</div>
+<label class="done"><input type="checkbox" data-s="2"> Passo 2 concluído</label>
+</div></div></section>
+
+<section id="passo-3"><div class="step"><div class="plate">3</div><div>
+<h2>Peça ao Claude para analisar o vídeo</h2>
+<p class="lead">Anexe o MP4 e cole a transcrição. O Claude tira imagens do vídeo, mede os cortes e explica como as animações funcionam.</p>
+<div class="pr"><div class="bar"><span>Prompt 2 · Análise do vídeo</span><button data-t="p2">Copiar</button></div><pre id="p2">Estou te enviando um vídeo viral em animação 3D e a transcrição dele. Analise o vídeo frame por frame: extraia imagens ao longo do vídeo, monte folhas de contato, detecte os cortes de cena e aproxime os momentos em que legendas e etiquetas entram na tela. Quero entender como as animações funcionam: duração, quantidade de cortes, movimentos de câmera, cores por peça, tipos de etiqueta, estilo da legenda, personagem e transições. Não quero copiar o conteúdo, quero entender a receita para criarmos um vídeo nosso no mesmo estilo.
+
+Transcrição:
+[COLE A TRANSCRIÇÃO AQUI]</pre></div>
+<h3>O que você deve receber</h3>
+<div class="grid">
+<div class="card"><h4>Poucos cortes</h4><p>A câmera desliza e dá zoom dentro de uma cena contínua, em vez de cortar toda hora.</p></div>
+<div class="card"><h4>Tudo acumula</h4><p>Cada peça entra para resolver o problema da anterior, e a cena nunca é limpa.</p></div>
+<div class="card"><h4>Uma cor por peça</h4><p>A mesma peça tem sempre a mesma cor, assim ninguém precisa ler para reconhecer.</p></div>
+<div class="card"><h4>Corte transparente</h4><p>Dá para ver o que acontece dentro das peças, com partículas simples.</p></div>
+<div class="card"><h4>Legenda palavra por palavra</h4><p>Uma palavra por vez, grossa, com contorno, e nomes técnicos em amarelo.</p></div>
+<div class="card"><h4>Etiquetas e símbolos</h4><p>Pílulas com a explicação, nome técnico em destaque, ✕ quando a ideia falha e ✓ quando funciona.</p></div>
+</div>
+<p><b>Como saber se deu certo:</b> o Claude te devolveu uma explicação com essas características, com números (duração, cortes) e não só opiniões.</p>
+<label class="done"><input type="checkbox" data-s="3"> Passo 3 concluído</label>
+</div></div></section>
+
+<section id="passo-4"><div class="step"><div class="plate">4</div><div>
+<h2>Libere o roteiro</h2>
+<p class="lead">Com a análise pronta, o Claude escreve o roteiro no mesmo ritmo do vídeo de referência, com o que aparece na tela entre colchetes.</p>
+<div class="pr"><div class="bar"><span>Prompt 3 · Roteiro</span><button data-t="p3">Copiar</button></div><pre id="p3">Com base na análise, crie o roteiro do nosso vídeo sobre [TEMA: ex. a CVT do carrinho Baja]. Regras:
+- Frases curtas, no mesmo ritmo do vídeo de referência.
+- Cada peça nasce de um problema da peça anterior ("então você...").
+- O nome técnico só aparece depois da ideia.
+- Mostre pelo menos uma ideia que falha antes da que funciona.
+- Feche repetindo a ideia central, no estilo "é mais importante entender a ideia do que decorar os nomes".
+- Termine com uma chamada para comentar duas palavras: uma para quem já sabia e outra para quem não sabia. Sugira palavras que combinem com o nosso público.
+- Cerca de [330] palavras (uns 2 minutos falados).
+Formato: dividido por cena, com o texto falado e, entre colchetes, o que aparece na tela.
+Nosso público: [ex. estudantes de engenharia e o pessoal do Baja]. Como a gente chama o público no vídeo: [ex. galera, pessoal].</pre></div>
+<p>Leia em voz alta. Se tropeçar numa frase, peça pra simplificar. Só avance quando o roteiro estiver aprovado.</p>
+<div class="pr"><div class="bar"><span>Ajustes de roteiro (use quantos precisar)</span><button data-t="p3b">Copiar</button></div><pre id="p3b">Ficou longo na cena [N]. Reduza para [X] frases, mantendo a ideia. / Troque a palavra [A] por algo mais simples. / Explique a parte [B] com uma analogia do dia a dia.</pre></div>
+<p><b>Como saber se deu certo:</b> o roteiro tem frases curtas, termos técnicos explicados e dá o tempo que você queria.</p>
+<label class="done"><input type="checkbox" data-s="4"> Passo 4 concluído</label>
+</div></div></section>
+
+<section id="passo-5"><div class="step"><div class="plate">5</div><div>
+<h2>Monte as cenas 3D (em partes)</h2>
+<p class="lead">O Claude cria uma página que anima o vídeo no navegador. Peça só as 3 primeiras cenas primeiro, para aprovar o visual antes de gastar tempo com o resto.</p>
+<div class="pr"><div class="bar"><span>Prompt 4 · Primeiras cenas</span><button data-t="p4">Copiar</button></div><pre id="p4">O roteiro está aprovado. Monte a animação em uma página HTML com Three.js, no formato vertical 9:16, estilo 3D simples (low-poly). Regras:
+- Defina uma cor para cada peça e mantenha a mesma em todo o vídeo. Mostre a tabela de cores.
+- Poucos cortes: a câmera desliza e dá zoom dentro da cena. Troque de cena com um escurecimento rápido.
+- Legenda palavra por palavra no terço inferior, fonte preta grossa, branca com contorno escuro, nomes técnicos em amarelo.
+- Etiquetas em pílula: laranja = força/energia, azul = informação, vermelho = problema, amarelo = nome técnico. Use ✕ vermelho quando a ideia falha.
+- Corte transparente quando precisar mostrar o interior de uma peça.
+- Barra de tempo com play/pause e um botão "Gravar" que esconde os controles e reinicia o vídeo.
+- Personagem de poucos polígonos [descreva: ex. camisa amarela] e cenário [descreva: ex. oficina e ladeira de lama].
+Comece só pelas 3 primeiras cenas para eu aprovar o visual.</pre></div>
+<div class="pr"><div class="bar"><span>Prompt 5 · Resto do vídeo</span><button data-t="p5">Copiar</button></div><pre id="p5">O visual está aprovado. Monte as cenas restantes e, no final, me envie a legenda completa para dublar: o texto limpo, em ordem, sem colchetes e sem indicações de tela.</pre></div>
+<div class="tip"><b>Dica:</b> se algo não ficar bom, mande um print e diga o que esperava. O Claude enxerga a imagem e corrige.</div>
+<p><b>Como saber se deu certo:</b> você consegue assistir ao vídeo todo, mudo, e as animações contam a história do roteiro.</p>
+<label class="done"><input type="checkbox" data-s="5"> Passo 5 concluído</label>
+</div></div></section>
+
+<section id="passo-6"><div class="step"><div class="plate">6</div><div>
+<h2>Faça a dublagem no ElevenLabs</h2>
+<p class="lead">Use só o texto limpo que o Claude te enviou no passo anterior.</p>
+<ol><li>Entre no ElevenLabs e abra a ferramenta de texto para voz (Text to Speech).</li><li>Cole o texto limpo, <b>sem colchetes</b>.</li><li>Escolha uma voz em português que combine com o público. A nossa foi a <b>“Roger – Laid-Back, Casual, Resonant”</b>, que soou descontraída. O arquivo veio com os valores 50 de estabilidade e 75 de similaridade (aparecem no nome do arquivo).</li><li>Gere, ouça tudo e refaça os trechos que soarem estranhos.</li><li>Baixe o <b>MP3</b>.</li></ol>
+<div class="tip"><b>Dica:</b> escreva siglas e números do jeito que se fala. Se a voz errar uma palavra técnica, troque a grafia no texto (por exemplo separando as letras) e gere de novo antes de baixar.</div>
+<p><b>Como saber se deu certo:</b> o áudio tem a duração parecida com a esperada e a pronúncia está correta do começo ao fim.</p>
+<label class="done"><input type="checkbox" data-s="6"> Passo 6 concluído</label>
+</div></div></section>
+
+<section id="passo-7"><div class="step"><div class="plate">7</div><div>
+<h2>Coloque a dublagem no vídeo</h2>
+<p class="lead">Anexe o MP3 no chat. O Claude mede as pausas da fala, encaixa cada frase na cena certa e embute o áudio na página.</p>
+<div class="pr"><div class="bar"><span>Prompt 6 · Sincronizar</span><button data-t="p6">Copiar</button></div><pre id="p6">Aqui está a dublagem em MP3. Coloque no vídeo: meça a duração, detecte as pausas da fala, case cada frase do roteiro com as pausas reais, ajuste legendas e animações para o tempo real da voz, embuta o áudio na página e publique. Me diga quanto durou cada cena.</pre></div>
+<h3>O que o Claude faz por trás</h3>
+<p>Detecta os silêncios com o <code>ffmpeg</code>, escolhe quais pausas separam as frases comparando o tamanho de cada uma com o número de letras, reparte o tempo das palavras dentro de cada frase e remapeia toda a linha do tempo para o novo ritmo.</p>
+<p><b>Como saber se deu certo:</b> ao assistir, a legenda e a cena acompanham a voz, e a barra de tempo permite pular sem quebrar nada.</p>
+<label class="done"><input type="checkbox" data-s="7"> Passo 7 concluído</label>
+</div></div></section>
+
+<section id="passo-8"><div class="step"><div class="plate">8</div><div>
+<h2>Revise e corrija</h2>
+<p class="lead">Assista ao vídeo inteiro pelo menos uma vez. Anote cena, momento e problema, e peça a correção.</p>
+<div class="pr"><div class="bar"><span>Prompt 7 · Correção</span><button data-t="p7">Copiar</button></div><pre id="p7">Na cena [N], por volta de [MM:SS], [o que está errado: ex. a legenda aparece antes da voz / uma peça atravessa a outra / a cor está diferente]. Era para [como deveria ser]. Confira renderizando a cena antes de publicar e me diga o que mudou.</pre></div>
+<ul><li>Quando for visual, mande um <b>print</b> junto.</li><li>Uma correção por vez, para ficar fácil de conferir.</li><li>Se o problema for a voz, volte ao passo 6 e refaça só o trecho.</li></ul>
+<label class="done"><input type="checkbox" data-s="8"> Passo 8 concluído</label>
+</div></div></section>
+
+<section id="passo-9"><div class="step"><div class="plate">9</div><div>
+<h2>Grave e publique</h2>
+<ol><li>Abra a página do vídeo e aperte <b>Assistir</b> para iniciar.</li><li>Ligue o gravador de tela com o <b>som do aparelho</b> ativado (se a opção ficar desligada, o vídeo sai mudo).</li><li>Toque em <b>Gravar</b>: os controles somem e o vídeo recomeça do zero. Toque na tela para os controles voltarem.</li><li>Ao fim do vídeo, pare a gravação.</li><li>Se quiser, corte as pontas e coloque capa ou música baixinha no CapCut.</li><li>Publique no TikTok, Instagram ou YouTube Shorts.</li></ol>
+<div class="pr"><div class="bar"><span>Prompt 8 · Documentar (opcional)</span><button data-t="p8">Copiar</button></div><pre id="p8">Crie uma página com a documentação do vídeo que fizemos: o roteiro final, as cores de cada peça, os tempos da dublagem e os problemas que corrigimos, para a equipe reaproveitar no próximo vídeo.</pre></div>
+<label class="done"><input type="checkbox" data-s="9"> Passo 9 concluído</label>
+</div></div></section>
+
+<section id="exemplo"><h2><span class="bn">★</span>Exemplo real: o vídeo da CVT</h2>
+<p class="lead">Seguimos exatamente estes passos para explicar a CVT do carrinho Baja. Vale usar como modelo.</p>
+<a class="btn" href="https://claude.ai/artifact/YSJZEEavxWgEmaiYD22Q98">▶ Assistir ao vídeo</a>
+<div class="grid" style="margin-top:14px">
+<div class="card"><h4>Referência</h4><p>Vídeo viral que explica o motor de um carro, com 2:51 e só 15 cortes em todo o vídeo.</p></div>
+<div class="card"><h4>Resultado</h4><p>8 cenas, 32 frases e 2:07 de narração, a partir de um roteiro de cerca de 330 palavras.</p></div>
+<div class="card"><h4>Estrutura do roteiro</h4><p>Problema, ideia que falha, ideia melhor, peça nova, nome técnico, fechamento e chamada final.</p></div>
+</div>
+<h3>Cores que usamos</h3>
+<div class="grid">
+<div class="sw"><i style="background:#f28c28"></i>Polia do motor</div><div class="sw"><i style="background:#2f80ed"></i>Polia da roda</div><div class="sw"><i style="background:#15181c"></i>Correia</div><div class="sw"><i style="background:#ffd23f"></i>Pesos centrífugos</div><div class="sw"><i style="background:#35c759"></i>Mola</div><div class="sw"><i style="background:#9b59d6"></i>Rampa (came)</div>
+</div>
+<h3>Texto final dublado</h3>
+<div class="pr"><div class="bar"><span>Roteiro da CVT</span><button data-t="rot">Copiar</button></div><pre id="rot" class="rm">Se você quer que um carrinho suba qualquer ladeira e ainda corra na reta, ele precisa de muita força para arrancar e de muita velocidade depois. Só que o motor tem um problema: ele só rende bem numa rotação, e fora dela ele fica fraco.
+
+Então você liga o motor direto na roda. Na ladeira ele engasga, e na reta ele não passa de certa velocidade. Isso não funciona.
+
+Então você usa duas polias com uma correia no meio. Polia pequena puxando polia grande dá muita força, mas pouca velocidade. Polia grande puxando polia pequena dá velocidade, mas pouca força. Só que a polia tem tamanho fixo, e o carro precisa dos dois.
+
+Então você faz a polia de dois cones. Quando os cones se afastam, a correia afunda e a polia fica pequena. Quando se aproximam, a correia sobe e a polia fica grande. Esse é o princípio da CVT. Só que alguém precisa abrir e fechar os cones na hora certa.
+
+Na polia do motor, você coloca pesinhos. Quanto mais o motor gira, mais a força centrífuga joga eles para fora, e eles empurram os cones um contra o outro. Resultado: a correia sobe, a polia do motor fica grande, e o carro ganha velocidade. Esses são os pesos centrífugos.
+
+Na polia da roda, você coloca uma mola e uma rampa torta. Se a ladeira pesa, a roda resiste, a rampa empurra os cones para fechar e a mola ajuda, e a correia fica na posição de muita força. Quando a carga alivia, a mola cede e a correia muda de lado. Essa é a mola com a came da polia movida.
+
+Alma, é mais importante você entender a ideia do que decorar os nomes. No começo, a polia do motor é pequena e a da roda é grande: muita força. Conforme o carro acelera, as duas vão trocando de tamanho sozinhas, até a polia do motor ficar grande e a da roda pequena: muita velocidade. Tudo isso com o motor sempre girando na rotação em que ele rende melhor, sem você trocar nenhuma marcha.
+
+Pronto, você construiu uma CVT. Se você já sabia, comente baja. Se não sabia, comente engenharia.</pre></div>
+</section>
+
+<section id="problemas"><h2><span class="bn">!</span>Problemas comuns</h2>
+<div class="tw"><table><tr><th>Problema</th><th>O que fazer</th></tr>
+<tr><td>O Claude diz que não consegue abrir o vídeo</td><td>Confirme que o arquivo foi anexado e que a execução de código e criação de arquivos está ligada nas Configurações.</td></tr>
+<tr><td>A análise ficou superficial</td><td>Peça números: duração, quantidade de cortes, tempo médio entre cortes, e imagens aproximadas de momentos específicos.</td></tr>
+<tr><td>Roteiro muito longo</td><td>Peça para cortar para o número de palavras desejado. Cerca de 330 palavras rendem uns 2 minutos.</td></tr>
+<tr><td>A voz erra uma palavra</td><td>Mude a grafia no texto do ElevenLabs e gere de novo. Depois peça ao Claude para usar o áudio novo.</td></tr>
+<tr><td>Legenda adiantada ou atrasada</td><td>Diga a cena e o momento. A legenda dentro de cada frase é calculada por aproximação e pode variar uma fração de segundo.</td></tr>
+<tr><td>Sem som na gravação</td><td>Ative o som do aparelho no gravador de tela antes de gravar. Em alguns celulares, a opção fica nas configurações do gravador.</td></tr>
+<tr><td>Peça atravessando outra ou cor errada</td><td>Mande um print, diga a cena e peça para conferir renderizando antes de publicar.</td></tr>
+<tr><td>Quer o vídeo em MP4</td><td>A página roda no navegador. Para obter o MP4, grave a tela (passo 9).</td></tr></table></div>
+</section>
+</main>
+
+<footer><div class="stripe"></div><div class="chk"></div><b>CAJABAJA</b>Tutorial de vídeos 3D · feito com Claude, ElevenLabs e Three.js</footer>
+
+<script>
+(function(){
+  document.querySelectorAll('.pr .bar button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.dataset.t),t=el.innerText;
+      function ok(){var o=b.textContent;b.textContent='Copiado!';setTimeout(function(){b.textContent='Copiar'},1600)}
+      function fb(){try{var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');ok()}catch(e){b.textContent='Selecione e copie'}}
+      try{navigator.clipboard.writeText(t).then(ok,fb)}catch(e){fb()}
+    });
+  });
+  var boxes=document.querySelectorAll('.done input'),bar=document.querySelector('#prog i'),KEY='cajabaja-passos',saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+  function upd(){var n=0;boxes.forEach(function(c){if(c.checked)n++});bar.style.width=(n/boxes.length*100)+'%'}
+  boxes.forEach(function(c){
+    c.checked=!!saved[c.dataset.s];
+    c.addEventListener('change',function(){saved[c.dataset.s]=c.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}upd()});
+  });
+  upd();
+})();
+</script>
+</body>
+</html>
